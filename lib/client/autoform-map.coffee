@@ -7,7 +7,8 @@ defaults =
 	geolocation: false
 	searchBox: false
 	autolocate: false
-	zoom: 1
+	zoom: 1 #default zoom
+	zoomOnLocate: 13 #zoom to this when a lat/lng is chosen
 
 AutoForm.addInputType 'map',
 	template: 'afMap'
@@ -42,7 +43,10 @@ Template.afMap.created = ->
 		if t.mapReady.get() and ctx.value and not t._stopInterceptValue
 			location = if typeof ctx.value == 'string' then ctx.value.split ',' else if ctx.value.hasOwnProperty 'lat' then [ctx.value.lat, ctx.value.lng] else [ctx.value[1], ctx.value[0]]
 			location = new google.maps.LatLng parseFloat(location[0]), parseFloat(location[1])
-			t.setMarker t.map, location, t.options.zoom
+			if location.lat() && location.lng()
+				t.setMarker t.map, location, t.options.zoomOnLocate
+			else
+				t.setMarker t.map, location, t.options.zoom
 			t.map.setCenter location
 			t._stopInterceptValue = true
 
@@ -83,7 +87,7 @@ initTemplateAndGoogleMaps = ->
 
 		google.maps.event.addListener searchBox, 'places_changed', =>
 			location = searchBox.getPlaces()[0].geometry.location
-			@setMarker @map, location
+			@setMarker @map, location, @options.zoomOnLocate
 			@map.setCenter location
 
 		$(input).removeClass('af-map-search-box-hidden')
@@ -91,14 +95,14 @@ initTemplateAndGoogleMaps = ->
 	if @data.atts.autolocate and navigator.geolocation and not @data.value
 		navigator.geolocation.getCurrentPosition (position) =>
 			location = new google.maps.LatLng position.coords.latitude, position.coords.longitude
-			@setMarker @map, location, @options.zoom
+			@setMarker @map, location, @options.zoomOnLocate
 			@map.setCenter location
 
 	if typeof @data.atts.rendered == 'function'
 		@data.atts.rendered @map
 
-	google.maps.event.addListener @map, 'click', (e) =>
-		@setMarker @map, e.latLng
+#	google.maps.event.addListener @map, 'click', (e) =>
+#		@setMarker @map, e.latLng
 
 	@$('.js-map').closest('form').on 'reset', =>
 		@data.marker and @data.marker.setMap null
@@ -133,6 +137,7 @@ Template.afMap.helpers
 		@loading.get()
 
 Template.afMap.events
+
 	'click .js-locate': (e, t) ->
 		e.preventDefault()
 
@@ -141,7 +146,7 @@ Template.afMap.events
 		@loading.set true
 		navigator.geolocation.getCurrentPosition (position) =>
 			location = new google.maps.LatLng position.coords.latitude, position.coords.longitude
-			@setMarker @map, location, @options.zoom
+			@setMarker @map, location, @options.zoomOnLocate
 			@map.setCenter location
 			@loading.set false
 
