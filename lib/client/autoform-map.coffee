@@ -9,6 +9,7 @@ defaults =
 	autolocate: false
 	zoom: 1 #default zoom
 	zoomOnLocate: 13 #zoom to this when a lat/lng is chosen
+	clickToChoose: true
 
 AutoForm.addInputType 'map',
 	template: 'afMap'
@@ -101,8 +102,9 @@ initTemplateAndGoogleMaps = ->
 	if typeof @data.atts.rendered == 'function'
 		@data.atts.rendered @map
 
-#	google.maps.event.addListener @map, 'click', (e) =>
-#		@setMarker @map, e.latLng
+	if @options.clickToChoose
+		google.maps.event.addListener @map, 'click', (e) =>
+			@setMarker @map, e.latLng
 
 	@$('.js-map').closest('form').on 'reset', =>
 		@data.marker and @data.marker.setMap null
