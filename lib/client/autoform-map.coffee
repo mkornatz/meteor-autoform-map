@@ -18,8 +18,10 @@ AutoForm.addInputType 'map',
 
 		lat = node.find('.js-lat').val()
 		lng = node.find('.js-lng').val()
+		zoom = node.find('.js-zoom').val()
 
 		if lat.length > 0 and lng.length > 0
+			zoom: zoom
 			lat: lat
 			lng: lng
 	contextAdjust: (ctx) ->
@@ -45,7 +47,10 @@ Template.afMap.created = ->
 			location = if typeof ctx.value == 'string' then ctx.value.split ',' else if ctx.value.hasOwnProperty 'lat' then [ctx.value.lat, ctx.value.lng] else [ctx.value[1], ctx.value[0]]
 			location = new google.maps.LatLng parseFloat(location[0]), parseFloat(location[1])
 			if location.lat() && location.lng()
-				t.setMarker t.map, location, t.options.zoomOnLocate
+				if ctx.value.zoom
+					t.setMarker t.map, location, ctx.value.zoom
+				else
+					t.setMarker t.map, location, t.options.zoomOnLocate
 			else
 				t.setMarker t.map, location, t.options.zoom
 			t.map.setCenter location
@@ -105,6 +110,9 @@ initTemplateAndGoogleMaps = ->
 	if @options.clickToChoose
 		google.maps.event.addListener @map, 'click', (e) =>
 			@setMarker @map, e.latLng
+
+	google.maps.event.addListener @map, 'zoom_changed', (e) =>
+		@$('.js-zoom').val @map.getZoom()
 
 	@$('.js-map').closest('form').on 'reset', =>
 		@data.marker and @data.marker.setMap null
