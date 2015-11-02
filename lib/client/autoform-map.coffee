@@ -7,7 +7,7 @@ defaults =
 	geolocation: false
 	searchBox: false
 	autolocate: false
-	zoom: 1 #default zoom
+	defaultZoom: 1 #default zoom
 	zoomOnLocate: 13 #zoom to this when a lat/lng is chosen
 	clickToChoose: true
 
@@ -52,7 +52,7 @@ Template.afMap.created = ->
 				else
 					t.setMarker t.map, location, t.options.zoomOnLocate
 			else
-				t.setMarker t.map, location, t.options.zoom
+				t.setMarker t.map, location, t.options.defaultZoom
 			t.map.setCenter location
 			t._stopInterceptValue = true
 
@@ -83,7 +83,7 @@ initTemplateAndGoogleMaps = ->
 	@map = new google.maps.Map @find('.js-map'), mapOptions
 
 	@map.setCenter new google.maps.LatLng @options.defaultLat, @options.defaultLng
-	@map.setZoom @options.zoom
+	@map.setZoom @options.defaultZoom
 
 	if @data.atts.searchBox
 		input = @find('.js-search')
@@ -117,7 +117,7 @@ initTemplateAndGoogleMaps = ->
 	@$('.js-map').closest('form').on 'reset', =>
 		@data.marker and @data.marker.setMap null
 		@map.setCenter new google.maps.LatLng @options.defaultLat, @options.defaultLng
-		@map.setZoom @options?.zoom or 0
+		@map.setZoom @options?.defaultZoom or 0
 
 	@mapReady.set true
 
