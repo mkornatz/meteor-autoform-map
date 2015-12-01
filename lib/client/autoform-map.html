@@ -1,14 +1,13 @@
 <template name="afMap">
 	<div data-schema-key="{{schemaKey}}" reverse="{{atts.reverse}}">
-		<input type="text" class="js-lat" style="display: none">
-		<input type="text" class="js-lng" style="display: none">
-		<input type="text" class="js-zoom" style="display: none">
-		<input type="text" class="controls af-map-search-box js-search af-map-search-box-hidden">
-		{{#if atts.geolocation}}
-		<a style="margin-bottom:5px;" class="btn btn-default js-locate">
-			<i class="fa {{#if loading}}fa-spin fa-circle-o-notch{{else}}fa-map-marker{{/if}}"></i> My location
-		</a>
-		{{/if}}
-		<div class="js-map" style="width:{{width}}; height:{{height}};"></div>
+		<input type="hidden" name="lat">
+		<input type="hidden" name="lng">
+		<input type="hidden" name="zoom">
+		<input type="hidden" name="formatted_address">
+		<input type="hidden" name="place_id">
+
+		<input type="text" class="af-map-search" placeholder="Search for a place...">
+
+		<div class="af-map" style="width:{{width}}; height:{{height}};"></div>
 	</div>
 </template>

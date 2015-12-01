@@ -9,7 +9,6 @@ Package.onUse(function(api) {
   api.versionsFrom('1.0');
 
   api.use([
-  	'coffeescript',
   	'templating',
     'reactive-var',
   	'aldeed:autoform@5.6.0'
@@ -22,6 +21,6 @@ Package.onUse(function(api) {
   api.addFiles([
   	'lib/client/autoform-map.html',
     'lib/client/autoform-map.css',
-  	'lib/client/autoform-map.coffee'
+  	'lib/client/autoform-map.js'
   ], 'client');
 });
