@@ -1,8 +1,8 @@
 Package.describe({
-  name: 'yogiben:autoform-map',
+  name: 'mkornatz:autoform-map',
   summary: 'Edit location coordinates with autoForm',
   version: '0.2.0',
-  git: 'https://github.com/yogiben/meteor-autoform-map'
+  git: 'https://github.com/mkornatz/meteor-autoform-map'
 });
 
 Package.onUse(function(api) {
