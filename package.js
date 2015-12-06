@@ -11,10 +11,7 @@ Package.onUse(function(api) {
   api.use([
   	'templating',
     'reactive-var',
-  	'aldeed:autoform@5.6.0'
-  ], 'client');
-
-  api.imply([
+  	'aldeed:autoform@5.6.0',
     'dburles:google-maps@1.1.5'
   ], 'client');
 
