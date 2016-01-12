@@ -15,6 +15,8 @@ Package.onUse(function(api) {
     'dburles:google-maps@1.1.5'
   ], 'client');
 
+  api.imply('dburles:google-maps@1.1.5', 'client'); //necessary for high-level Google Maps callback to work
+
   api.addFiles([
   	'lib/client/autoform-map.html',
     'lib/client/autoform-map.css',
